@@ -1,0 +1,30 @@
+﻿@page "/"
+@using BlazorApp1.Components
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<EditForm Model="@this">
+    <InputText2 @bind-Value="PostalCode" Formatter="@((val) => ToPostalCode(val))" disabled="true"></InputText2>
+</EditForm>
+
+@code {
+    public string PostalCode { get; set; } = "12345";
+
+    public static string ToPostalCode(string s)
+    {
+        if (s == null)
+        {
+            return null;
+        }
+
+        var postalCode = s.Replace(" ", string.Empty).Trim();
+
+        return postalCode.Length == 5 && int.TryParse(postalCode, out var _)
+            ? $"{postalCode[..3]} {postalCode[3..]}"
+            : s;
+    }
+}
